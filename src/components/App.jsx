@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { contactsActions } from './redux/contacts';
 import { ContactsList } from './ContactsList';
 import { ContactForm } from './ContactForm';
 import { Filter } from './Filter';
@@ -9,7 +11,9 @@ const CONTACTS_KEY = 'contacts';
 
 export const App = () => {
   const [contacts, setContacts] = useState(localStorage.read(CONTACTS_KEY));
-  const [filter, setFilter] = useState('');
+  // const [filter, setFilter] = useState('');
+  const filter = useSelector(state => state.filter);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     localStorage.save(CONTACTS_KEY, contacts);
@@ -37,9 +41,10 @@ export const App = () => {
       prevState.filter(contact => contact.id !== contactId)
     );
   };
+  console.log(contactsActions);
 
   const onChangeFilter = event => {
-    setFilter(event.currentTarget.value);
+    dispatch(contactsActions.changeFilter(event.currentTarget.value));
   };
 
   const getAddedContacts = () => {
