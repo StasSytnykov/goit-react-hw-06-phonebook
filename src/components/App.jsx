@@ -16,13 +16,19 @@ export const App = () => {
   }, [contacts]);
 
   const onAddContact = contact => {
-    if (contacts.some(item => item.name === contact.name)) {
+    if (contacts && contacts.some(item => item.name === contact.name)) {
       alert(`${contact.name} is already in contacts`);
       return;
     }
 
     setContacts(prevState => {
-      return [...prevState, contact];
+      console.log(prevState);
+      if (!prevState) {
+        return [contact];
+      }
+      if (prevState) {
+        return [...prevState, contact];
+      }
     });
   };
 
@@ -38,6 +44,9 @@ export const App = () => {
 
   const getAddedContacts = () => {
     const toLowerCaseFilter = filter.toLocaleLowerCase();
+    if (!contacts) {
+      return;
+    }
     return contacts.filter(contact =>
       contact.name.toLocaleLowerCase().includes(toLowerCaseFilter)
     );

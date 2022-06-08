@@ -5,7 +5,7 @@ export const ContactsList = ({ contactsArr, deleteContact }) => {
   return (
     <div>
       <ul>
-        {contactsArr.length > 0 &&
+        {contactsArr &&
           contactsArr.map(({ name, number, id }) => (
             <ContactListItem
               key={id}
