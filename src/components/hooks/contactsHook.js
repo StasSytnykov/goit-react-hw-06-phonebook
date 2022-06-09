@@ -1,6 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { contactsActions } from '.';
-import { getContact, onFilterChange } from './contactsSlice';
+import { contactsActions } from 'components/redux/contacts';
+import {
+  getContact,
+  onFilterChange,
+} from 'components/redux/contacts/contactsSlice';
 
 export const useContacts = () => {
   const dispatch = useDispatch();
