@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useContacts, useFilter } from './redux/contacts/customHook';
+import { useContacts } from './redux/contacts/customHook';
 import { ContactsList } from './ContactsList';
 import { ContactForm } from './ContactForm';
 import { Filter } from './Filter';
@@ -9,8 +9,8 @@ import style from './AppContainer.module.css';
 const CONTACTS_KEY = 'contacts';
 
 export const App = () => {
-  const { contacts, addContact, deleteContact } = useContacts();
-  const { filter, changeFilter } = useFilter();
+  const { contacts, filter, addContact, deleteContact, changeFilter } =
+    useContacts();
 
   useEffect(() => {
     localStorage.save(CONTACTS_KEY, contacts);
