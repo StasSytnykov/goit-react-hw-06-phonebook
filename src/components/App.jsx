@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { contactsActions } from './redux/contacts';
+import { getContact, onFilterChange } from './redux/contacts/contactsSlice';
 import { ContactsList } from './ContactsList';
 import { ContactForm } from './ContactForm';
 import { Filter } from './Filter';
@@ -10,10 +11,10 @@ import style from './AppContainer.module.css';
 const CONTACTS_KEY = 'contacts';
 
 export const App = () => {
-  const [contacts, setContacts] = useState(localStorage.read(CONTACTS_KEY));
-  // const [filter, setFilter] = useState('');
-  const filter = useSelector(state => state.filter);
+  const contacts = useSelector(getContact);
+  const filter = useSelector(onFilterChange);
   const dispatch = useDispatch();
+  console.log(contacts);
 
   useEffect(() => {
     localStorage.save(CONTACTS_KEY, contacts);
@@ -24,24 +25,12 @@ export const App = () => {
       alert(`${contact.name} is already in contacts`);
       return;
     }
-
-    setContacts(prevState => {
-      console.log(prevState);
-      if (!prevState) {
-        return [contact];
-      }
-      if (prevState) {
-        return [...prevState, contact];
-      }
-    });
+    dispatch(contactsActions.addContact(contact));
   };
 
   const onDeleteContact = contactId => {
-    setContacts(prevState =>
-      prevState.filter(contact => contact.id !== contactId)
-    );
+    dispatch(contactsActions.deleteContact(contactId));
   };
-  console.log(contactsActions);
 
   const onChangeFilter = event => {
     dispatch(contactsActions.changeFilter(event.currentTarget.value));

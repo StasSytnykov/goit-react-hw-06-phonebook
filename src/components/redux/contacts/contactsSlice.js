@@ -1,8 +1,13 @@
 import { combineReducers, createSlice } from '@reduxjs/toolkit';
+import * as localStorage from '../../utils/localStorage';
+
+const CONTACTS_KEY = 'contacts';
 
 const contactSlice = createSlice({
-  name: 'items',
-  initialState: [],
+  name: 'contacts',
+  initialState: localStorage.read(CONTACTS_KEY)
+    ? localStorage.read(CONTACTS_KEY)
+    : [],
   reducers: {
     addContact: (state, action) => [...state, action.payload],
     deleteContact: (state, action) =>
@@ -20,9 +25,11 @@ const appReducer = combineReducers({
   [contactSlice.name]: contactSlice.reducer,
   [filterSlice.name]: filterSlice.reducer,
 });
-console.log(contactSlice.actions);
 
 export const { addContact, deleteContact } = contactSlice.actions;
 export const { changeFilter } = filterSlice.actions;
+
+export const getContact = state => state.contacts;
+export const onFilterChange = state => state.filter;
 
 export default appReducer;
