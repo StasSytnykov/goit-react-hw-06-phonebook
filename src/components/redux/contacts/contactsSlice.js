@@ -3,6 +3,8 @@ import * as localStorage from '../../utils/localStorage';
 
 const CONTACTS_KEY = 'contacts';
 
+// Slice
+
 const contactSlice = createSlice({
   name: 'contacts',
   initialState: localStorage.read(CONTACTS_KEY)
@@ -26,10 +28,16 @@ const appReducer = combineReducers({
   [filterSlice.name]: filterSlice.reducer,
 });
 
+// Actions
+
 export const { addContact, deleteContact } = contactSlice.actions;
 export const { changeFilter } = filterSlice.actions;
 
+// Selectors
+
 export const getContact = state => state.contacts;
 export const onFilterChange = state => state.filter;
+
+// Hooks
 
 export default appReducer;

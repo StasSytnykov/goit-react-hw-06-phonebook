@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { contactsActions } from './redux/contacts';
-import { getContact, onFilterChange } from './redux/contacts/contactsSlice';
+import { useContacts, useFilter } from './redux/contacts/customHook';
 import { ContactsList } from './ContactsList';
 import { ContactForm } from './ContactForm';
 import { Filter } from './Filter';
@@ -11,10 +9,8 @@ import style from './AppContainer.module.css';
 const CONTACTS_KEY = 'contacts';
 
 export const App = () => {
-  const contacts = useSelector(getContact);
-  const filter = useSelector(onFilterChange);
-  const dispatch = useDispatch();
-  console.log(contacts);
+  const { contacts, addContact, deleteContact } = useContacts();
+  const { filter, changeFilter } = useFilter();
 
   useEffect(() => {
     localStorage.save(CONTACTS_KEY, contacts);
@@ -25,15 +21,15 @@ export const App = () => {
       alert(`${contact.name} is already in contacts`);
       return;
     }
-    dispatch(contactsActions.addContact(contact));
+    addContact(contact);
   };
 
   const onDeleteContact = contactId => {
-    dispatch(contactsActions.deleteContact(contactId));
+    deleteContact(contactId);
   };
 
   const onChangeFilter = event => {
-    dispatch(contactsActions.changeFilter(event.currentTarget.value));
+    changeFilter(event.currentTarget.value);
   };
 
   const getAddedContacts = () => {
