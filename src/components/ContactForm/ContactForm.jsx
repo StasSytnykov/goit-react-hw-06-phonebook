@@ -1,11 +1,20 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
+import { useContacts } from '../../hooks/contactsHook';
 import style from './ContactForm.module.css';
 
-export const ContactForm = ({ onSubmit }) => {
+export const ContactForm = () => {
+  const { contacts, addContact } = useContacts();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+
+  const onAddContact = contact => {
+    if (contacts && contacts.some(item => item.name === contact.name)) {
+      alert(`${contact.name} is already in contacts`);
+      return;
+    }
+    addContact(contact);
+  };
 
   const onChangeInput = event => {
     const { name, value } = event.target;
@@ -19,7 +28,7 @@ export const ContactForm = ({ onSubmit }) => {
 
   const onSubmitForm = event => {
     event.preventDefault();
-    onSubmit({
+    onAddContact({
       name: name,
       number: number,
       id: nanoid(),
@@ -67,8 +76,4 @@ export const ContactForm = ({ onSubmit }) => {
       </button>
     </form>
   );
-};
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };
