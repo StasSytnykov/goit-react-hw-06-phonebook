@@ -1,12 +1,26 @@
-import PropTypes from 'prop-types';
 import { ContactListItem } from './ContactListItem';
+import { useContacts } from '../../hooks/contactsHook';
 
-export const ContactsList = ({ contactsArr, deleteContact }) => {
+export const ContactsList = () => {
+  const { contacts, filter, deleteContact } = useContacts();
+
+  const getAddedContacts = () => {
+    const toLowerCaseFilter = filter.toLocaleLowerCase();
+    if (!contacts) {
+      return;
+    }
+    return contacts.filter(contact =>
+      contact.name.toLocaleLowerCase().includes(toLowerCaseFilter)
+    );
+  };
+
+  const filterContact = getAddedContacts();
+
   return (
     <div>
       <ul>
-        {contactsArr &&
-          contactsArr.map(({ name, number, id }) => (
+        {filterContact &&
+          filterContact.map(({ name, number, id }) => (
             <ContactListItem
               key={id}
               name={name}
@@ -18,15 +32,4 @@ export const ContactsList = ({ contactsArr, deleteContact }) => {
       </ul>
     </div>
   );
-};
-
-ContactsList.propTypes = {
-  contactsArr: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
-    })
-  ),
-  deleteContact: PropTypes.func.isRequired,
 };

@@ -1,16 +1,15 @@
 import { useEffect } from 'react';
-import { useContacts } from './hooks/contactsHook';
+import { useContacts } from '../hooks/contactsHook';
 import { ContactsList } from './ContactsList';
 import { ContactForm } from './ContactForm';
 import { Filter } from './Filter';
-import * as localStorage from './utils/localStorage';
+import * as localStorage from '../utils/localStorage';
 import style from './AppContainer.module.css';
 
 const CONTACTS_KEY = 'contacts';
 
 export const App = () => {
-  const { contacts, filter, addContact, deleteContact, changeFilter } =
-    useContacts();
+  const { contacts, filter, addContact, changeFilter } = useContacts();
 
   useEffect(() => {
     localStorage.save(CONTACTS_KEY, contacts);
@@ -24,22 +23,8 @@ export const App = () => {
     addContact(contact);
   };
 
-  const onDeleteContact = contactId => {
-    deleteContact(contactId);
-  };
-
   const onChangeFilter = event => {
     changeFilter(event.currentTarget.value);
-  };
-
-  const getAddedContacts = () => {
-    const toLowerCaseFilter = filter.toLocaleLowerCase();
-    if (!contacts) {
-      return;
-    }
-    return contacts.filter(contact =>
-      contact.name.toLocaleLowerCase().includes(toLowerCaseFilter)
-    );
   };
 
   return (
@@ -48,10 +33,7 @@ export const App = () => {
       <ContactForm onSubmit={onAddContact} />
       <h2>Contacts</h2>
       <Filter value={filter} onChange={onChangeFilter} />
-      <ContactsList
-        contactsArr={getAddedContacts()}
-        deleteContact={onDeleteContact}
-      />
+      <ContactsList />
     </div>
   );
 };
