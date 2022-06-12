@@ -1,8 +1,8 @@
-import { useContacts } from '../../hooks/contactsHook';
+import { useFilter } from 'hooks/filterHook';
 import style from './Filter.module.css';
 
 export const Filter = () => {
-  const { filter, changeFilter } = useContacts();
+  const { filter, changeFilter } = useFilter();
 
   return (
     <div>

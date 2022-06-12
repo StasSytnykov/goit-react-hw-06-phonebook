@@ -1,8 +1,10 @@
 import { ContactListItem } from './ContactListItem';
-import { useContacts } from '../../hooks/contactsHook';
+import { useContacts } from 'hooks/contactsHook';
+import { useFilter } from 'hooks/filterHook';
 
 export const ContactsList = () => {
-  const { contacts, filter, deleteContact } = useContacts();
+  const { contacts, deleteContact } = useContacts();
+  const { filter } = useFilter();
 
   const getAddedContacts = () => {
     const toLowerCaseFilter = filter.toLocaleLowerCase();
